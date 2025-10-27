@@ -33,7 +33,12 @@ class PreloadScene extends Phaser.Scene {
 
         // Load assets - NEED TO ADD MORE LATER
         // For now loading 1 sprite
-        this.load.image('test', '/assets/buildings/exterior/Autotiles_32x32/1.png');
+        this.load.image('player', '/assets/characters/player/Characters_free/Adam_16x16.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        });
+
+        this.load.image('ground', '/assets/buildings/exterior/Autotiles_32x32/1.png');
     }
 
     create() {
