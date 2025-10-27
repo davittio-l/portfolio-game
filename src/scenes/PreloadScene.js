@@ -24,6 +24,13 @@ class PreloadScene extends Phaser.Scene {
                 fill: '#ffffff'
             }
         });
+        loadingText.setOrigin(0.5, 0.5);
+
+        this.load.on('progress', (value) => {
+            progressBar.clear();
+            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillRect(width / 2 - 150, height / 2 - 15, 300 * value, 30);
+        });
 
         this.load.on('complete', () => {
             progressBar.destroy();
@@ -33,7 +40,7 @@ class PreloadScene extends Phaser.Scene {
 
         // Load assets - NEED TO ADD MORE LATER
         // For now loading 1 sprite
-        this.load.image('player', '/assets/characters/player/Characters_free/Adam_16x16.png', {
+        this.load.spritesheet('player', '/assets/characters/player/Characters_free/Adam_16x16.png', {
             frameWidth: 16,
             frameHeight: 16
         });
