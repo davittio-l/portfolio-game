@@ -1,17 +1,12 @@
 import Phaser from 'phaser';
 
-// ========================================
 // FRAME CALCULATION HELPERS
-// ========================================
-// The sprite sheet is 384×224 pixels = 24 columns × 7 rows (16×32 per frame)
 const COLS = 24;
 const cell = (r, c) => r * COLS + c;
 const seq = (r, fromC, toC) => 
     Array.from({length: toC - fromC + 1}, (_, i) => cell(r, fromC + i));
 
-// All walking animations are on ROW 2 (the 3rd row)
-// Different column ranges for each direction
-const WALK_ROW = 2;  // All walks are on row 2
+const WALK_ROW = 2;
 
 class CampusScene extends Phaser.Scene {
   constructor() {
@@ -22,137 +17,91 @@ class CampusScene extends Phaser.Scene {
   }
   
   create() {
+    // Set world bounds
+    this.physics.world.setBounds(0, 0, 1600, 1200);
 
-     this.physics.world.setBounds(0, 0, 1000, 1000);
-
-    // Set background color to grass green
-    this.cameras.main.setBackgroundColor('#5ac54f');
+    // GRASS TILEMAP
+    const map = this.make.tilemap({ 
+      tileWidth: 32, 
+      tileHeight: 32, 
+      width: 50, 
+      height: 38 
+    });
     
-    // Add title
-    this.add.text(400, 30, 'Portfolio Campus - Use WASD to Move!', {
-        fontSize: '24px',
-        fill: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 4
-    }).setOrigin(0.5);
+    // Add the tileset image 
+    const tileset = map.addTilesetImage('grass_tileset', 'grass_tileset');
     
-    // Create a nice patterned grass ground using graphics
-    const graphics = this.add.graphics();
+    // Create ground layer
+    const groundLayer = map.createBlankLayer('Ground', tileset, 0, 0);
     
-    // Draw grass pattern
-    for (let y = 0; y < 1200; y += 32) {
-      for (let x = 0; x < 1600; x += 32) {
-        const shade = (x + y) % 64 === 0 ? '#4a9c3f' : '#5ac54f';
-        graphics.fillStyle(shade === '#4a9c3f' ? 0x4a9c3f : 0x5ac54f, 1);
-        graphics.fillRect(x, y, 32, 32);
-        
-        graphics.fillStyle(0x3d8534, 0.3);
-        graphics.fillCircle(x + 8, y + 8, 2);
-        graphics.fillCircle(x + 24, y + 24, 2);
+    for (let y = 0; y < map.height; y++) {
+      for (let x = 0; x < map.width; x++) {
+        const grassTiles = [1, 2]; // indices of grass tiles in your sheet
+        const randomGrass = Phaser.Math.RND.pick(grassTiles);
+        groundLayer.putTileAt(randomGrass, x, y);
       }
     }
-    graphics.setDepth(-1);
     
-    // Add title - 
-    // ********MAKE THIS INTO A POP UP NOTIFICATION UPON LOADING THE WEBPAGE****
-    //*********************************************** */
-    this.add.text(400, 80, 'Portfolio Campus - Use WASD to Move and press E to interact with people and buildings!', {
-      fontSize: '24px',
+    groundLayer.setDepth(-1);
+
+    // TITLE TEXT
+    // ========================================
+    this.add.text(800, 50, 'Portfolio Campus', {
+      fontSize: '32px',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 6,
+      fontFamily: 'Arial Black'
+    }).setOrigin(0.5).setScrollFactor(0).setDepth(100);
+    
+    this.add.text(800, 85, 'Use WASD to Move • Press E to Interact', {
+      fontSize: '18px',
       fill: '#ffffff',
       stroke: '#000000',
       strokeThickness: 4
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setScrollFactor(0).setDepth(100);
 
-    // CREATE MULTIPLE BUILDINGS - Store them in an array for collision
+    // ========================================
+    // BUILDINGS WITH REFINED COLLISIONS
+    // ========================================
     this.buildings = this.physics.add.staticGroup();
+    this.createBuildings();
 
-    // Building 1: Top-left - "About Me"
-    const building1 = this.buildings.create(180, 170, 'gym');
-    building1.setScale(1);
-    building1.setSize(building1.width * 0.4, building1.height * 0.2);
-    building1.setOffset(building1.width * 0.1, building1.height * 0.4);
-    building1.refreshBody();
-    this.add.text(180, 120, 'About Me', {
-      fontSize: '14px',
-      fill: '#ffffff',
-      stroke: '#000000',
-      strokeThickness: 3
-    }).setOrigin(0.5);
-    
-    // Building 2: Top-right - "Work Experience"
-    const building2 = this.buildings.create(820, 170, 'musicstore');
-    building2.setScale(1);
-    building2.setSize(building2.width * 0.8, building2.height * 0.6);
-    building2.setOffset(building2.width * 0.1, building2.height * 0.4);
-    building2.refreshBody();
-    this.add.text(820, 120, 'Work Experience', {
-      fontSize: '14px',
-      fill: '#ffffff',
-      stroke: '#000000',
-      strokeThickness: 3
-    }).setOrigin(0.5);
-    
-    // Building 3: Bottom-left - "Certifications"
-    const building3 = this.buildings.create(150, 800, 'gunstore');
-    building3.setScale(1);
-    building3.setSize(building3.width * 0.8, building3.height * 0.6);
-    building3.setOffset(building3.width * 0.1, building3.height * 0.4);
-    building3.refreshBody();
-    this.add.text(150, 750, 'Certifications', {
-      fontSize: '14px',
-      fill: '#ffffff',
-      stroke: '#000000',
-      strokeThickness: 3
-    }).setOrigin(0.5);
-    
-    // Building 4: Bottom-right - "Case Studies"
-    const building4 = this.buildings.create(800, 750, 'condo');
-    building4.setScale(1);
-    building4.setSize(building4.width * 0.8, building4.height * 0.6);
-    building4.setOffset(building4.width * 0.1, building4.height * 0.4);
-    building4.refreshBody();
-    this.add.text(800, 700, 'Case Studies', {
-      fontSize: '14px',
-      fill: '#ffffff',
-      stroke: '#000000',
-      strokeThickness: 3
-    }).setOrigin(0.5);
-    
-    // Center building - contact
-    const building5 = this.buildings.create(470, 570, 'icecream');
-    building5.setScale(1);
-    building5.setSize(building5.width * 0.8, building5.height * 0.6);
-    building5.setOffset(building5.width * 0.1, building5.height * 0.4);
-    building5.refreshBody();
-    this.add.text(470, 520, 'Contact', {
-      fontSize: '14px',
-      fill: '#ffffff',
-      stroke: '#000000',
-      strokeThickness: 3
-    }).setOrigin(0.5);
-
-    // Create player sprite
-    this.player = this.physics.add.sprite(200, 370, 'player', 1);
+    // ========================================
+    // PLAYER SETUP
+    // ========================================
+    this.player = this.physics.add.sprite(800, 600, 'player', 1);
     this.player.setScale(2);
     this.player.setCollideWorldBounds(true);
-    this.player.setOrigin(0.5, 1); // Anchor at feet for better ground contact
+    this.player.setOrigin(0.5, 1);
+    
+    // Set player collision box (smaller for better feel)
+    this.player.body.setSize(12, 16);
+    this.player.body.setOffset(2, 16);
 
-    // Make camera follow the player
+    // ========================================
+    // CAMERA SETUP
+    // ========================================
     this.cameras.main.setBounds(0, 0, 1600, 1200);
-    this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
-    this.cameras.main.setZoom(1);
+    this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
+    this.cameras.main.setZoom(.9);
 
-    // Create animations
+    // ========================================
+    // ANIMATIONS
+    // ========================================
     this.createAnimations();
 
-    // ADD COLLISION with all buildings
+    // ========================================
+    // COLLISIONS
+    // ========================================
     this.physics.add.collider(this.player, this.buildings);
 
-    // Debug - log total frames available
+    // Debug info
     console.log('Total frames:', this.textures.get('player').frameTotal);
-    console.log('Expected frames: 168 (24 cols × 7 rows)');
     
-    // Set up controls
+    // ========================================
+    // CONTROLS
+    // ========================================
     this.cursors = this.input.keyboard.createCursorKeys();
     this.wasd = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -160,16 +109,88 @@ class CampusScene extends Phaser.Scene {
       left: Phaser.Input.Keyboard.KeyCodes.A,
       right: Phaser.Input.Keyboard.KeyCodes.D
     });
-    
-    // Add SPACE key for testing
-    this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.interactKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
   }
-  
-  createAnimations() {
-    // All walking animations are on row 2 with different column ranges
-    // FINAL FIX: Mapped based on actual testing results
+
+  createBuildings() {
+    // Building 1: Top-left - "About Me"
+    const building1 = this.buildings.create(250, 200, 'gym');
+    building1.setScale(1.2);
+    building1.setSize(building1.width * 0.5, building1.height * 0.25);
+    building1.setOffset(building1.width * 0.25, building1.height * 0.7);
+    building1.refreshBody();
     
-    // Walking down (Row 2, columns 18-23)
+    this.add.text(250, 130, 'About Me', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 4,
+      fontFamily: 'Arial Black'
+    }).setOrigin(0.5);
+    
+    // Building 2: Top-right - "Work Experience"
+    const building2 = this.buildings.create(1200, 200, 'musicstore');
+    building2.setScale(1.2);
+    building2.setSize(building2.width * 0.6, building2.height * 0.3);
+    building2.setOffset(building2.width * 0.2, building2.height * 0.65);
+    building2.refreshBody();
+    
+    this.add.text(1200, 130, 'Work Experience', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 4,
+      fontFamily: 'Arial Black'
+    }).setOrigin(0.5);
+    
+    // Building 3: Bottom-left - "Certifications"
+    const building3 = this.buildings.create(250, 900, 'gunstore');
+    building3.setScale(1.2);
+    building3.setSize(building3.width * 0.6, building3.height * 0.3);
+    building3.setOffset(building3.width * 0.2, building3.height * 0.65);
+    building3.refreshBody();
+    
+    this.add.text(250, 830, 'Certifications', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 4,
+      fontFamily: 'Arial Black'
+    }).setOrigin(0.5);
+    
+    // Building 4: Bottom-right - "Case Studies"
+    const building4 = this.buildings.create(1200, 900, 'condo');
+    building4.setScale(1.2);
+    building4.setSize(building4.width * 0.6, building4.height * 0.3);
+    building4.setOffset(building4.width * 0.2, building4.height * 0.65);
+    building4.refreshBody();
+    
+    this.add.text(1200, 830, 'Case Studies', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 4,
+      fontFamily: 'Arial Black'
+    }).setOrigin(0.5);
+    
+    // Center building - "Contact"
+    const building5 = this.buildings.create(800, 600, 'icecream');
+    building5.setScale(1.3);
+    building5.setSize(building5.width * 0.6, building5.height * 0.3);
+    building5.setOffset(building5.width * 0.2, building5.height * 0.65);
+    building5.refreshBody();
+    
+    this.add.text(800, 530, 'Contact', {
+      fontSize: '20px',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 4,
+      fontFamily: 'Arial Black'
+    }).setOrigin(0.5);
+  }
+
+  createAnimations() {
+    // Walking animations
     this.anims.create({
       key: 'walk-down',
       frames: this.anims.generateFrameNumbers('player', { 
@@ -179,7 +200,6 @@ class CampusScene extends Phaser.Scene {
       repeat: -1
     });
     
-    // Walking left (Row 2, columns 12-17)
     this.anims.create({
       key: 'walk-left',
       frames: this.anims.generateFrameNumbers('player', { 
@@ -189,7 +209,6 @@ class CampusScene extends Phaser.Scene {
       repeat: -1
     });
     
-    // Walking right (Row 2, columns 0-5)
     this.anims.create({
       key: 'walk-right',
       frames: this.anims.generateFrameNumbers('player', { 
@@ -199,7 +218,6 @@ class CampusScene extends Phaser.Scene {
       repeat: -1
     });
     
-    // Walking up (Row 2, columns 6-11)
     this.anims.create({
       key: 'walk-up',
       frames: this.anims.generateFrameNumbers('player', { 
@@ -209,75 +227,80 @@ class CampusScene extends Phaser.Scene {
       repeat: -1
     });
     
-    // Idle animations - using middle frame of each direction on row 2
+    // Idle animations
     this.anims.create({
       key: 'idle-down',
-      frames: [{ key: 'player', frame: cell(WALK_ROW, 20) }], // Middle of columns 18-23
+      frames: [{ key: 'player', frame: cell(WALK_ROW, 20) }],
       frameRate: 1
     });
     
     this.anims.create({
       key: 'idle-left',
-      frames: [{ key: 'player', frame: cell(WALK_ROW, 14) }], // Middle of columns 12-17
+      frames: [{ key: 'player', frame: cell(WALK_ROW, 14) }],
       frameRate: 1
     });
     
     this.anims.create({
       key: 'idle-right',
-      frames: [{ key: 'player', frame: cell(WALK_ROW, 2) }], // Middle of columns 0-5
+      frames: [{ key: 'player', frame: cell(WALK_ROW, 2) }],
       frameRate: 1
     });
     
     this.anims.create({
       key: 'idle-up',
-      frames: [{ key: 'player', frame: cell(WALK_ROW, 8) }], // Middle of columns 6-11
+      frames: [{ key: 'player', frame: cell(WALK_ROW, 8) }],
       frameRate: 1
     });
-    
-    console.log('Animations FINAL mapping:');
-    console.log('Down (S key): columns 18-23');
-    console.log('Left (A key): columns 12-17');
-    console.log('Right (D key): columns 0-5');
-    console.log('Up (W key): columns 6-11');
   }
 
   update() {
     if (!this.player) return;
     
-    const speed = 180;
+    const speed = 160;
     let moving = false;
-    let lastDirection = null;
     
-    // Reset velocity
     this.player.setVelocity(0);
     
-    // Priority: vertical movement first, then horizontal
-    if (this.wasd.down.isDown || this.cursors.down.isDown) {
-      this.player.setVelocityY(speed);
-      this.player.anims.play('walk-down', true);
-      moving = true;
-      lastDirection = 'down';
-    } 
-    else if (this.wasd.up.isDown || this.cursors.up.isDown) {
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('walk-up', true);
-      moving = true;
-      lastDirection = 'up';
-    }
-    else if (this.wasd.left.isDown || this.cursors.left.isDown) {
-      this.player.setVelocityX(-speed);
-      this.player.anims.play('walk-left', true);
-      moving = true;
-      lastDirection = 'left';
-    } 
-    else if (this.wasd.right.isDown || this.cursors.right.isDown) {
-      this.player.setVelocityX(speed);
-      this.player.anims.play('walk-right', true);
-      moving = true;
-      lastDirection = 'right';
+    // Movement with diagonal support
+    let vx = 0;
+    let vy = 0;
+    
+    if (this.wasd.up.isDown || this.cursors.up.isDown) {
+      vy = -speed;
+    } else if (this.wasd.down.isDown || this.cursors.down.isDown) {
+      vy = speed;
     }
     
-    // If not moving, show idle frame for last direction
+    if (this.wasd.left.isDown || this.cursors.left.isDown) {
+      vx = -speed;
+    } else if (this.wasd.right.isDown || this.cursors.right.isDown) {
+      vx = speed;
+    }
+    
+    // Normalize diagonal movement
+    if (vx !== 0 && vy !== 0) {
+      vx *= 0.707;
+      vy *= 0.707;
+    }
+    
+    this.player.setVelocity(vx, vy);
+    
+    // Animations - prioritize vertical over horizontal
+    if (vy < 0) {
+      this.player.anims.play('walk-up', true);
+      moving = true;
+    } else if (vy > 0) {
+      this.player.anims.play('walk-down', true);
+      moving = true;
+    } else if (vx < 0) {
+      this.player.anims.play('walk-left', true);
+      moving = true;
+    } else if (vx > 0) {
+      this.player.anims.play('walk-right', true);
+      moving = true;
+    }
+    
+    // Idle animation
     if (!moving) {
       const currentAnim = this.player.anims.currentAnim?.key ?? 'walk-down';
       this.player.anims.stop();
