@@ -9,6 +9,9 @@ class CampusScene extends Phaser.Scene {
   }
   
   create() {
+
+     this.physics.world.setBounds(0, 0, 1600, 1200);
+
     // Set background color to grass green
     this.cameras.main.setBackgroundColor('#5ac54f');
     
@@ -24,14 +27,12 @@ class CampusScene extends Phaser.Scene {
     const graphics = this.add.graphics();
     
     // Draw grass pattern
-    for (let y = 0; y < 600; y += 32) {
-        for (let x = 0; x < 800; x += 32) {
-        // Alternate grass shades for texture
+    for (let y = 0; y < 1200; y += 32) { // Changed from 600 to 1200
+    for (let x = 0; x < 1600; x += 32) { // Changed from 800 to 1600
         const shade = (x + y) % 64 === 0 ? '#4a9c3f' : '#5ac54f';
         graphics.fillStyle(shade === '#4a9c3f' ? 0x4a9c3f : 0x5ac54f, 1);
         graphics.fillRect(x, y, 32, 32);
         
-        // Add tiny dots for grass detail
         graphics.fillStyle(0x3d8534, 0.3);
         graphics.fillCircle(x + 8, y + 8, 2);
         graphics.fillCircle(x + 24, y + 24, 2);
@@ -115,10 +116,16 @@ class CampusScene extends Phaser.Scene {
     strokeThickness: 3
     }).setOrigin(0.5);
 
-    // Create player sprite (keep existing code)
+    // Create player sprite
     this.player = this.physics.add.sprite(200, 370, 'player', 1);
     this.player.setScale(2);
     this.player.setCollideWorldBounds(true);
+
+    // Make camera follow the player
+    this.cameras.main.setBounds(0, 0, 1600, 1200); // Camera bounds match world
+    this.cameras.main.startFollow(this.player, true, 0.1, 0.1); // Smooth following
+    this.cameras.main.setZoom(1); // Can adjust zoom if needed
+
   
     // ... animations and controls setup ...
       this.createAnimations();
