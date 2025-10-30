@@ -10,7 +10,7 @@ class CampusScene extends Phaser.Scene {
   
   create() {
 
-     this.physics.world.setBounds(0, 0, 1600, 1200);
+     this.physics.world.setBounds(0, 0, 1000, 1000);
 
     // Set background color to grass green
     this.cameras.main.setBackgroundColor('#5ac54f');
@@ -40,8 +40,10 @@ class CampusScene extends Phaser.Scene {
     }
     graphics.setDepth(-1);
     
-    // Add title
-    this.add.text(400, 30, 'Portfolio Campus - Use WASD to Move!', {
+    // Add title - 
+    // ********MAKE THIS INTO A POP UP NOTIFICATION UPON LOADING THE WEBPAGE****
+    //*********************************************** */
+    this.add.text(400, 80, 'Portfolio Campus - Use WASD to Move and ress E to interact with people and buildings!', {
       fontSize: '24px',
       fill: '#ffffff',
       stroke: '#000000',
@@ -54,7 +56,7 @@ class CampusScene extends Phaser.Scene {
     // Building 1: Top-left - "About Me"
     const building1 = this.buildings.create(180, 170, 'gym');
     building1.setScale(1);
-    building1.setSize(building1.width * 0.8, building1.height * 0.6); // Adjust collision box
+    building1.setSize(building1.width * 0.4, building1.height * 0.2); // Adjust collision box
     building1.setOffset(building1.width * 0.1, building1.height * 0.4); // Offset to bottom of sprite
     building1.refreshBody();
     this.add.text(180, 120, 'About Me', {
@@ -65,12 +67,12 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Building 2: Top-right - "Work Experience"
-    const building2 = this.buildings.create(620, 140, 'musicstore');
+    const building2 = this.buildings.create(820, 170, 'musicstore');
     building2.setScale(1);
     building2.setSize(building2.width * 0.8, building2.height * 0.6);
     building2.setOffset(building2.width * 0.1, building2.height * 0.4);
     building2.refreshBody();
-    this.add.text(620, 90, 'Work Experience', {
+    this.add.text(820, 120, 'Work Experience', {
     fontSize: '14px',
     fill: '#ffffff',
     stroke: '#000000',
@@ -78,12 +80,12 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Building 3: Bottom-left - "Certifications"
-    const building3 = this.buildings.create(220, 480, 'gunstore');
+    const building3 = this.buildings.create(150, 800, 'gunstore');
     building3.setScale(1);
     building3.setSize(building3.width * 0.8, building3.height * 0.6);
     building3.setOffset(building3.width * 0.1, building3.height * 0.4);
     building3.refreshBody();
-    this.add.text(220, 430, 'Certifications', {
+    this.add.text(150, 8750, 'Certifications', {
     fontSize: '14px',
     fill: '#ffffff',
     stroke: '#000000',
@@ -91,12 +93,12 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Building 4: Bottom-right - "Case Studies"
-    const building4 = this.buildings.create(580, 460, 'condo');
+    const building4 = this.buildings.create(800, 750, 'condo');
     building4.setScale(1);
     building4.setSize(building4.width * 0.8, building4.height * 0.6);
     building4.setOffset(building4.width * 0.1, building4.height * 0.4);
     building4.refreshBody();
-    this.add.text(580, 410, 'Case Studies', {
+    this.add.text(800, 700, 'Case Studies', {
     fontSize: '14px',
     fill: '#ffffff',
     stroke: '#000000',
@@ -104,12 +106,12 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     //Center building - contact
-    const building5 = this.buildings.create(400, 370, 'icecream');
+    const building5 = this.buildings.create(470, 570, 'icecream');
     building5.setScale(1);
     building5.setSize(building5.width * 0.8, building5.height * 0.6);
     building5.setOffset(building5.width * 0.1, building5.height * 0.4);
     building5.refreshBody();
-    this.add.text(400, 320, 'Contact', {
+    this.add.text(470, 520, 'Contact', {
     fontSize: '14px',
     fill: '#ffffff',
     stroke: '#000000',
