@@ -19,6 +19,8 @@ class CampusScene extends Phaser.Scene {
       stroke: '#000000',
       strokeThickness: 4
     }).setOrigin(0.5);
+
+
     
     // Create player sprite
     this.player = this.physics.add.sprite(400, 300, 'player', 1);
@@ -48,7 +50,7 @@ class CampusScene extends Phaser.Scene {
   // Walking down (frames 42-48)
   this.anims.create({
     key: 'walk-down',
-    frames: this.anims.generateFrameNumbers('player', { start: 42, end: 48 }),
+    frames: this.anims.generateFrameNumbers('player', { start: 42, end: 47 }),
     frameRate: 10,
     repeat: -1
   });
