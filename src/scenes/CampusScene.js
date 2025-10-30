@@ -45,90 +45,81 @@ class CampusScene extends Phaser.Scene {
   }
   
   createAnimations() {
-    // Walking down (row 1: frames 12-17)
-    this.anims.create({
-      key: 'walk-down',
-      frames: this.anims.generateFrameNumbers('player', { start: 12, end: 17 }),
-      frameRate: 8,
-      repeat: -1
-    });
-    
-    // Walking left - SWAPPED (using right frames)
-    this.anims.create({
-      key: 'walk-left',
-      frames: this.anims.generateFrameNumbers('player', { start: 36, end: 41 }),
-      frameRate: 8,
-      repeat: -1
-    });
-    
-    // Walking right - SWAPPED (using left frames)
-    this.anims.create({
-      key: 'walk-right',
-      frames: this.anims.generateFrameNumbers('player', { start: 24, end: 29 }),
-      frameRate: 8,
-      repeat: -1
-    });
-    
-    // Walking up (row 4: frames 48-53)
-    this.anims.create({
-      key: 'walk-up',
-      frames: this.anims.generateFrameNumbers('player', { start: 48, end: 53 }),
-      frameRate: 8,
-      repeat: -1
-    });
-    
-    // Idle
-    this.anims.create({
-      key: 'idle',
-      frames: [{ key: 'player', frame: 1 }],
-      frameRate: 1
-    });
-  }
+  // Walking down (frames 42-48)
+  this.anims.create({
+    key: 'walk-down',
+    frames: this.anims.generateFrameNumbers('player', { start: 42, end: 48 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  
+  // Walking left (frames 36-41)
+  this.anims.create({
+    key: 'walk-left',
+    frames: this.anims.generateFrameNumbers('player', { start: 36, end: 41 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  
+  // Walking right (frames 25-29)
+  this.anims.create({
+    key: 'walk-right',
+    frames: this.anims.generateFrameNumbers('player', { start: 25, end: 29 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  
+  // Walking up (frames 30-35)
+  this.anims.create({
+    key: 'walk-up',
+    frames: this.anims.generateFrameNumbers('player', { start: 30, end: 35 }),
+    frameRate: 10,
+    repeat: -1
+  });
+  
+  // Idle
+  this.anims.create({
+    key: 'idle',
+    frames: [{ key: 'player', frame: 0 }],
+    frameRate: 1
+  });
+}
 
-  update() {
-    if (!this.player) return;
-    
-    const speed = 160;
-    let moving = false;
-    
-    // Reset velocity
-    this.player.setVelocity(0);
-    
-    // TEMPORARY DEBUG: Press S to cycle through frames to find the right "down" frames
-    if (this.wasd.down.isDown || this.cursors.down.isDown) {
-      this.player.setVelocityY(speed);
-      
-      // Press SPACE while holding S to cycle frames
-      if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
-        if (!this.testFrame) this.testFrame = 0;
-        this.testFrame++;
-        if (this.testFrame > 24) this.testFrame = 0; // Test frames 0-24
-        this.player.setFrame(this.testFrame);
-        console.log('Testing frame:', this.testFrame);
-      }
-      moving = true;
-    }
-    else if (this.wasd.up.isDown || this.cursors.up.isDown) {
-      this.player.setVelocityY(-speed);
-      this.player.anims.play('walk-up', true);
-      moving = true;
-    }
-    else if (this.wasd.left.isDown || this.cursors.left.isDown) {
-      this.player.setVelocityX(-speed);
-      this.player.anims.play('walk-left', true);
-      moving = true;
-    } 
-    else if (this.wasd.right.isDown || this.cursors.right.isDown) {
-      this.player.setVelocityX(speed);
-      this.player.anims.play('walk-right', true);
-      moving = true;
-    }
-    
-    // If not moving, show idle
-    if (!moving) {
-      this.player.anims.play('idle', true);
-    }
+update() {
+  if (!this.player) return;
+  
+  const speed = 160;
+  let moving = false;
+  
+  // Reset velocity
+  this.player.setVelocity(0);
+  
+  if (this.wasd.down.isDown || this.cursors.down.isDown) {
+    this.player.setVelocityY(speed);
+    this.player.anims.play('walk-down', true);
+    moving = true;
+  } 
+  else if (this.wasd.up.isDown || this.cursors.up.isDown) {
+    this.player.setVelocityY(-speed);
+    this.player.anims.play('walk-up', true);
+    moving = true;
   }
+  else if (this.wasd.left.isDown || this.cursors.left.isDown) {
+    this.player.setVelocityX(-speed);
+    this.player.anims.play('walk-left', true);
+    moving = true;
+  } 
+  else if (this.wasd.right.isDown || this.cursors.right.isDown) {
+    this.player.setVelocityX(speed);
+    this.player.anims.play('walk-right', true);
+    moving = true;
+  }
+  
+  // If not moving, show idle
+  if (!moving) {
+    this.player.anims.play('idle', true);
+  }
+}
 }
 
 export default CampusScene;
