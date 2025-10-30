@@ -45,10 +45,17 @@ class PreloadScene extends Phaser.Scene {
             frameHeight: 32
         });
 
+        
+
         // Load multiple ground options
         this.load.image('ground', '/assets/buildings/exterior/Autotiles_32x32/1.png');
         this.load.image('grass', '/assets/buildings/exterior/Autotiles_32x32/2.png');
         this.load.image('path', '/assets/buildings/exterior/Autotiles_32x32/3.png');
+
+        this.load.image('building1', '/assets/buildings/exterior/Modern_Exteriors_Complete_32x32/1.png');
+
+        this.load.image('building', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Gym_2.png');
+
         
     }
 

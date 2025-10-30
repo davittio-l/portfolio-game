@@ -9,8 +9,35 @@ class CampusScene extends Phaser.Scene {
   }
   
   create() {
-    // Set background color
+    // Set background color to grass green
     this.cameras.main.setBackgroundColor('#5ac54f');
+    
+    // Add title
+    this.add.text(400, 30, 'Portfolio Campus - Use WASD to Move!', {
+        fontSize: '24px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 4
+    }).setOrigin(0.5);
+    
+    // Create a nice patterned grass ground using graphics
+    const graphics = this.add.graphics();
+    
+    // Draw grass pattern
+    for (let y = 0; y < 600; y += 32) {
+        for (let x = 0; x < 800; x += 32) {
+        // Alternate grass shades for texture
+        const shade = (x + y) % 64 === 0 ? '#4a9c3f' : '#5ac54f';
+        graphics.fillStyle(shade === '#4a9c3f' ? 0x4a9c3f : 0x5ac54f, 1);
+        graphics.fillRect(x, y, 32, 32);
+        
+        // Add tiny dots for grass detail
+        graphics.fillStyle(0x3d8534, 0.3);
+        graphics.fillCircle(x + 8, y + 8, 2);
+        graphics.fillCircle(x + 24, y + 24, 2);
+        }
+    }
+    graphics.setDepth(-1);
     
     // Add title
     this.add.text(400, 30, 'Portfolio Campus - Use WASD to Move!', {
@@ -20,18 +47,77 @@ class CampusScene extends Phaser.Scene {
       strokeThickness: 4
     }).setOrigin(0.5);
 
+    // CREATE MULTIPLE BUILDINGS - Store them in an array for collision
+    this.buildings = this.physics.add.staticGroup();
 
+    // Building 1: Top-left - "About Me"
+    const building1 = this.buildings.create(180, 170, 'gym');
+    building1.setScale(1);
+    building1.refreshBody();
+    this.add.text(180, 120, 'About Me', {
+        fontSize: '14px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 3
+    }).setOrigin(0.5);
     
-    // Create player sprite
+    // Building 2: Top-right - "Work Experience"
+    const building2 = this.buildings.create(620, 140, 'condo');
+    building2.setScale(1);
+    building2.refreshBody();
+    this.add.text(620, 90, 'Work Experience', {
+        fontSize: '14px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 3
+    }).setOrigin(0.5);
+    
+    // Building 3: Bottom-left - "Certifications"
+    const building3 = this.buildings.create(220, 480, 'gunstore');
+    building3.setScale(1);
+    building3.refreshBody();
+    this.add.text(220, 430, 'Certifications', {
+        fontSize: '14px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 3
+    }).setOrigin(0.5);
+    
+    // Building 4: Bottom-right - "Case Studies"
+    const building4 = this.buildings.create(580, 460, 'gym');
+    building4.setScale(1);
+    building4.refreshBody();
+    this.add.text(580, 410, 'Case Studies', {
+        fontSize: '14px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 3
+    }).setOrigin(0.5);
+    
+    //Center building - contact
+    const building5 = this.buildings.create(400, 370, 'condo');
+    building5.setScale(1);
+    building5.refreshBody();
+    this.add.text(400, 320, 'Contact', {
+        fontSize: '14px',
+        fill: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 3
+    }).setOrigin(0.5);
+
+    // Create player sprite (keep existing code)
     this.player = this.physics.add.sprite(400, 300, 'player', 1);
     this.player.setScale(2);
     this.player.setCollideWorldBounds(true);
-    
+  
+    // ... animations and controls setup ...
+      this.createAnimations();
+
+    // ADD COLLISION with all buildings
+    this.physics.add.collider(this.player, this.buildings);
+
     // Debug
     console.log('Total frames:', this.textures.get('player').frameTotal);
-    
-    // Create animations
-    this.createAnimations();
     
     // Set up controls
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -44,6 +130,8 @@ class CampusScene extends Phaser.Scene {
     
     // Add SPACE key for testing
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    this.physics.add.collider(this.player, this.building);
   }
   
   createAnimations() {
