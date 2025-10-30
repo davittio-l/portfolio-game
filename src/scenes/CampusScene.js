@@ -53,60 +53,70 @@ class CampusScene extends Phaser.Scene {
     // Building 1: Top-left - "About Me"
     const building1 = this.buildings.create(180, 170, 'gym');
     building1.setScale(1);
+    building1.setSize(building1.width * 0.8, building1.height * 0.6); // Adjust collision box
+    building1.setOffset(building1.width * 0.1, building1.height * 0.4); // Offset to bottom of sprite
     building1.refreshBody();
     this.add.text(180, 120, 'About Me', {
-        fontSize: '14px',
-        fill: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 3
+    fontSize: '14px',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 3
     }).setOrigin(0.5);
     
     // Building 2: Top-right - "Work Experience"
-    const building2 = this.buildings.create(620, 140, 'condo');
+    const building2 = this.buildings.create(620, 140, 'musicstore');
     building2.setScale(1);
+    building2.setSize(building2.width * 0.8, building2.height * 0.6);
+    building2.setOffset(building2.width * 0.1, building2.height * 0.4);
     building2.refreshBody();
     this.add.text(620, 90, 'Work Experience', {
-        fontSize: '14px',
-        fill: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 3
+    fontSize: '14px',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 3
     }).setOrigin(0.5);
     
     // Building 3: Bottom-left - "Certifications"
     const building3 = this.buildings.create(220, 480, 'gunstore');
     building3.setScale(1);
+    building3.setSize(building3.width * 0.8, building3.height * 0.6);
+    building3.setOffset(building3.width * 0.1, building3.height * 0.4);
     building3.refreshBody();
     this.add.text(220, 430, 'Certifications', {
-        fontSize: '14px',
-        fill: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 3
+    fontSize: '14px',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 3
     }).setOrigin(0.5);
     
     // Building 4: Bottom-right - "Case Studies"
-    const building4 = this.buildings.create(580, 460, 'gym');
+    const building4 = this.buildings.create(580, 460, 'condo');
     building4.setScale(1);
+    building4.setSize(building4.width * 0.8, building4.height * 0.6);
+    building4.setOffset(building4.width * 0.1, building4.height * 0.4);
     building4.refreshBody();
     this.add.text(580, 410, 'Case Studies', {
-        fontSize: '14px',
-        fill: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 3
+    fontSize: '14px',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 3
     }).setOrigin(0.5);
     
     //Center building - contact
-    const building5 = this.buildings.create(400, 370, 'condo');
+    const building5 = this.buildings.create(400, 370, 'icecream');
     building5.setScale(1);
+    building5.setSize(building5.width * 0.8, building5.height * 0.6);
+    building5.setOffset(building5.width * 0.1, building5.height * 0.4);
     building5.refreshBody();
     this.add.text(400, 320, 'Contact', {
-        fontSize: '14px',
-        fill: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 3
+    fontSize: '14px',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 3
     }).setOrigin(0.5);
 
     // Create player sprite (keep existing code)
-    this.player = this.physics.add.sprite(400, 300, 'player', 1);
+    this.player = this.physics.add.sprite(200, 370, 'player', 1);
     this.player.setScale(2);
     this.player.setCollideWorldBounds(true);
   

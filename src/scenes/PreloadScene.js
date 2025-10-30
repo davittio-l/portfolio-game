@@ -54,7 +54,11 @@ class PreloadScene extends Phaser.Scene {
 
         this.load.image('building1', '/assets/buildings/exterior/Modern_Exteriors_Complete_32x32/1.png');
 
-        this.load.image('building', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Gym_2.png');
+        this.load.image('gym', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Gym_2.png');
+        this.load.image('condo', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Shop_13.png');
+        this.load.image('gunstore', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Gun_Store_1.png');
+        this.load.image('icecream', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Ice_Cream_Shop_1.png');
+        this.load.image('musicstore', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Music_Store_1.png');
 
         
     }
