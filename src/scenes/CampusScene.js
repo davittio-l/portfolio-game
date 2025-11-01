@@ -20,29 +20,7 @@ class CampusScene extends Phaser.Scene {
     // Set world bounds
     this.physics.world.setBounds(0, 0, 1600, 1200);
 
-    // GRASS TILEMAP
-    const map = this.make.tilemap({ 
-      tileWidth: 32, 
-      tileHeight: 32, 
-      width: 50, 
-      height: 38 
-    });
-    
-    // Add the tileset image 
-    const tileset = map.addTilesetImage('grass_tileset', 'grass_tileset');
-    
-    // Create ground layer
-    const groundLayer = map.createBlankLayer('Ground', tileset, 0, 0);
-    
-    for (let y = 0; y < map.height; y++) {
-      for (let x = 0; x < map.width; x++) {
-        const grassTiles = [1, 2]; // indices of grass tiles in your sheet
-        const randomGrass = Phaser.Math.RND.pick(grassTiles);
-        groundLayer.putTileAt(randomGrass, x, y);
-      }
-    }
-    
-    groundLayer.setDepth(-1);
+    this.add.image(0, 0, 'campusMap').setOrigin(0, 0).setDepth(-1);
 
     // TITLE TEXT
     // ========================================
@@ -66,6 +44,23 @@ class CampusScene extends Phaser.Scene {
     // ========================================
     this.buildings = this.physics.add.staticGroup();
     this.createBuildings();
+
+    // ========================================
+    // Create Decorations (trees, bushes, etc.)
+    // ========================================
+    this.decorations = this.physics.add.staticGroup()
+
+  const tree1 = this.decorations.create(200, 360, 'tree1');
+  tree1.setScale(1.0); // Make it bigger
+  tree1.setSize(tree1.width * 0.01, tree1.height * 0.01);
+  tree1.setOffset(tree1.width * 0.01, tree1.height * 0.01);
+  tree1.refreshBody();
+  
+  const tree2 = this.decorations.create(700, 170, 'tree2');
+  tree2.setScale(1.0);
+  tree2.setSize(tree2.width * 0.05, tree2.height * 0.05);
+  tree2.setOffset(tree2.width * 0.05, tree2.height * 0.05);
+  tree2.refreshBody();
 
     // ========================================
     // PLAYER SETUP
@@ -95,6 +90,7 @@ class CampusScene extends Phaser.Scene {
     // COLLISIONS
     // ========================================
     this.physics.add.collider(this.player, this.buildings);
+    this.physics.add.collider(this.player, this.decorations);
 
     // Debug info
     console.log('Total frames:', this.textures.get('player').frameTotal);
@@ -114,13 +110,13 @@ class CampusScene extends Phaser.Scene {
 
   createBuildings() {
     // Building 1: Top-left - "About Me"
-    const building1 = this.buildings.create(250, 200, 'gym');
+    const building1 = this.buildings.create(250, 160, 'gym');
     building1.setScale(1.2);
     building1.setSize(building1.width * 0.5, building1.height * 0.25);
     building1.setOffset(building1.width * 0.25, building1.height * 0.7);
     building1.refreshBody();
     
-    this.add.text(250, 130, 'About Me', {
+    this.add.text(250, 110, 'About Me', {
       fontSize: '20px',
       fill: '#ffffff',
       stroke: '#000000',
@@ -129,13 +125,13 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Building 2: Top-right - "Work Experience"
-    const building2 = this.buildings.create(1200, 200, 'musicstore');
+    const building2 = this.buildings.create(1300, 200, 'musicstore');
     building2.setScale(1.2);
     building2.setSize(building2.width * 0.6, building2.height * 0.3);
     building2.setOffset(building2.width * 0.2, building2.height * 0.65);
     building2.refreshBody();
     
-    this.add.text(1200, 130, 'Work Experience', {
+    this.add.text(1300, 150, 'Work Experience', {
       fontSize: '20px',
       fill: '#ffffff',
       stroke: '#000000',
@@ -144,13 +140,13 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Building 3: Bottom-left - "Certifications"
-    const building3 = this.buildings.create(250, 900, 'gunstore');
+    const building3 = this.buildings.create(270, 1075, 'gunstore');
     building3.setScale(1.2);
     building3.setSize(building3.width * 0.6, building3.height * 0.3);
     building3.setOffset(building3.width * 0.2, building3.height * 0.65);
     building3.refreshBody();
     
-    this.add.text(250, 830, 'Certifications', {
+    this.add.text(270, 1025, 'Certifications', {
       fontSize: '20px',
       fill: '#ffffff',
       stroke: '#000000',
@@ -159,13 +155,13 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Building 4: Bottom-right - "Case Studies"
-    const building4 = this.buildings.create(1200, 900, 'condo');
+    const building4 = this.buildings.create(1200, 1000, 'condo');
     building4.setScale(1.2);
     building4.setSize(building4.width * 0.6, building4.height * 0.3);
     building4.setOffset(building4.width * 0.2, building4.height * 0.65);
     building4.refreshBody();
     
-    this.add.text(1200, 830, 'Case Studies', {
+    this.add.text(1200, 950, 'Case Studies', {
       fontSize: '20px',
       fill: '#ffffff',
       stroke: '#000000',
@@ -174,13 +170,13 @@ class CampusScene extends Phaser.Scene {
     }).setOrigin(0.5);
     
     // Center building - "Contact"
-    const building5 = this.buildings.create(800, 600, 'icecream');
-    building5.setScale(1.3);
+    const building5 = this.buildings.create(675, 710, 'icecream');
+    building5.setScale(1.1);
     building5.setSize(building5.width * 0.6, building5.height * 0.3);
     building5.setOffset(building5.width * 0.2, building5.height * 0.65);
     building5.refreshBody();
     
-    this.add.text(800, 530, 'Contact', {
+    this.add.text(675, 660, 'Contact', {
       fontSize: '20px',
       fill: '#ffffff',
       stroke: '#000000',

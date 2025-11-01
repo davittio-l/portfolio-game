@@ -38,29 +38,24 @@ class PreloadScene extends Phaser.Scene {
             loadingText.destroy();
         });
 
-        // Load assets - NEED TO ADD MORE LATER
-        // For now loading 1 sprite
+        // Load assets
+        this.load.image('campusMap', './assets/maps/campus-map.png');
+
         this.load.spritesheet('player', '/assets/characters/player/Characters_free/Adam_16x16.png', {
             frameWidth: 16,
             frameHeight: 32
         });
 
-        
-
-        // Load multiple ground options
+        // Load Assetas
         this.load.image('grass_tileset', '/assets/exteriors/Autotiles_32x32/Game_Maker_Studio_Autotiles_Singles_32x32/Game_Maker_Studio_Autotiles_Singles_32x32_15.png');
-        this.load.image('ground', '/assets/buildings/exterior/Autotiles_32x32/1.png');
-        this.load.image('grass', '/assets/buildings/exterior/Autotiles_32x32/2.png');
-        this.load.image('path', '/assets/buildings/exterior/Autotiles_32x32/3.png');
-
         this.load.image('building1', '/assets/buildings/exterior/Modern_Exteriors_Complete_32x32/1.png');
-
         this.load.image('gym', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Gym_2.png');
         this.load.image('condo', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Shop_13.png');
         this.load.image('gunstore', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Gun_Store_1.png');
         this.load.image('icecream', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Ice_Cream_Shop_1.png');
         this.load.image('musicstore', '/assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Floor_Modular_Building_32x32_Ground_Floor_Music_Store_1.png');
-
+        this.load.image('tree1', 'assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Villas_32x32_Tree_3.png');
+        this.load.image('tree2', 'assets/exteriors/Modern_Exteriors_Complete_Singles_32x32/ME_Singles_Villas_32x32_Tree_4.png');
         
     }
 
