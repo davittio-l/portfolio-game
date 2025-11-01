@@ -50,18 +50,51 @@ class CampusScene extends Phaser.Scene {
     // ========================================
     this.decorations = this.physics.add.staticGroup()
 
-  const tree1 = this.decorations.create(200, 360, 'tree1');
-  tree1.setScale(1.0); // Make it bigger
-  tree1.setSize(tree1.width * 0.01, tree1.height * 0.01);
-  tree1.setOffset(tree1.width * 0.01, tree1.height * 0.01);
-  tree1.refreshBody();
-  
-  const tree2 = this.decorations.create(700, 170, 'tree2');
-  tree2.setScale(1.0);
-  tree2.setSize(tree2.width * 0.05, tree2.height * 0.05);
-  tree2.setOffset(tree2.width * 0.05, tree2.height * 0.05);
-  tree2.refreshBody();
+    const tree1 = this.decorations.create(200, 360, 'tree1');
+    tree1.setScale(1.0); // Make it bigger
+    tree1.setSize(tree1.width * 0.01, tree1.height * 0.01);
+    tree1.setOffset(tree1.width * 0.01, tree1.height * 0.01);
+    tree1.refreshBody();
 
+    const tree1b = this.decorations.create(800, 1100, 'tree1');
+    tree1b.setScale(1.0);
+    tree1b.setSize(tree1b.width * 0.01, tree1b.height * 0.01);
+    tree1b.setOffset(tree1b.width * 0.01, tree1b.height * 0.01);
+    tree1b.refreshBody();
+
+    // Tree 1 type - third instance
+    const tree1c = this.decorations.create(500, 900, 'tree1');
+    tree1c.setScale(1.0);
+    tree1c.setSize(tree1c.width * 0.01, tree1c.height * 0.01);
+    tree1c.setOffset(tree1c.width * 0.01, tree1c.height * 0.01);
+    tree1c.refreshBody();
+
+    // Tree 1 type - fourth instance
+    const tree1d = this.decorations.create(975, 600, 'tree1');
+    tree1d.setScale(1.0);
+    tree1d.setSize(tree1d.width * 0.01, tree1d.height * 0.01);
+    tree1d.setOffset(tree1d.width * 0.01, tree1d.height * 0.01);
+    tree1d.refreshBody();
+
+    const tree2 = this.decorations.create(1500, 600, 'tree2');
+    tree2.setScale(1.0);
+    tree2.setSize(tree2.width * 0.001, tree2.height * 0.001);
+    tree2.setOffset(tree2.width * 0.001, tree2.height * 0.001);
+    tree2.refreshBody();
+
+  // Tree 2 type - second instance
+    const tree2b = this.decorations.create(50, 800, 'tree2'); // Same 'tree2' sprite!
+    tree2b.setScale(1.0);
+    tree2b.setSize(tree2b.width * 0.001, tree2b.height * 0.001);
+    tree2b.setOffset(tree2b.width * 0.001, tree2b.height * 0.001);
+    tree2b.refreshBody();
+
+    // Tree 2 type - second instance
+    const tree2c = this.decorations.create(975, 300, 'tree2'); // Same 'tree2' sprite!
+    tree2c.setScale(1.0);
+    tree2c.setSize(tree2c.width * 0.001, tree2c.height * 0.001);
+    tree2c.setOffset(tree2c.width * 0.001, tree2c.height * 0.001);
+    tree2c.refreshBody();
     // ========================================
     // PLAYER SETUP
     // ========================================
@@ -79,7 +112,7 @@ class CampusScene extends Phaser.Scene {
     // ========================================
     this.cameras.main.setBounds(0, 0, 1600, 1200);
     this.cameras.main.startFollow(this.player, true, 0.08, 0.08);
-    this.cameras.main.setZoom(.9);
+    this.cameras.main.setZoom(.5); //CHANGE
 
     // ========================================
     // ANIMATIONS
